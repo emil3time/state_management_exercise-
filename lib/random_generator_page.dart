@@ -2,9 +2,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class RandomGeneratorPage extends StatefulWidget {
+class RandomGeneratorPage extends HookWidget {
   int min, max;
+
+  final randomize = Random();
+
   RandomGeneratorPage({
     Key? key,
     required this.min,
@@ -12,24 +16,17 @@ class RandomGeneratorPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<RandomGeneratorPage> createState() => _RandomGeneratorPageState();
-}
-
-class _RandomGeneratorPageState extends State<RandomGeneratorPage> {
-  int? _randomNumber;
-  final randomize = Random();
-
-  @override
   Widget build(BuildContext context) {
+    // random number can be final because when use .value only changing state.
+    final randomNumber = useState<int?>(null);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Generate'),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          setState(() {
-            _randomNumber = widget.min + randomize.nextInt(widget.max + 1 - widget.min);
-          });
+          // no need for setState now
+          randomNumber.value = min + randomize.nextInt(max + 1 - min);
         },
         label: const Text(
           'Generate',
@@ -40,11 +37,23 @@ class _RandomGeneratorPageState extends State<RandomGeneratorPage> {
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Text(
-            _randomNumber?.toString() ?? 'Generate a number',
+            randomNumber.value?.toString() ?? 'Generate a number',
             style: const TextStyle(fontSize: 40),
           ),
         ),
       ),
     );
   }
+
+  // createState is now useless.
+  /* @override
+  State<RandomGeneratorPage> createState() => _RandomGeneratorPageState(); */
 }
+
+
+ // Cut build method nad paste to HookWidget
+/*
+class _RandomGeneratorPageState extends State<RandomGeneratorPage> {
+  int? _randomNumber;
+}
+ */
