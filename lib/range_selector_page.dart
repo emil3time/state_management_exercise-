@@ -1,31 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+
 import 'package:random_gen/random_generator_page.dart';
 
 import 'range_selector_form.dart';
 
-class RangeSelectorPage extends HookWidget {
-  //flutter hooks implementation description on  the next page.
+class RangeSelectorPage extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
 
   RangeSelectorPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final min = useState<int>(0);
-    final max = useState<int>(0);
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             if (formKey.currentState?.validate() == true) {
               formKey.currentState?.save();
 
-              if (min.value >= max.value) return;
-
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: ((context) =>
-                      RandomGeneratorPage(min: min.value, max: max.value)),
+                  builder: ((context) => const RandomGeneratorPage()),
                 ),
               );
             }
@@ -40,8 +34,6 @@ class RangeSelectorPage extends HookWidget {
         ),
         body: RangeSelectorForm(
           formKey: formKey,
-          minRangeSelector: (value) => min.value = value,
-          maxRangeSelector: (value) => max.value = value,
         ));
   }
 }
