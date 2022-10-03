@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:random_gen/randomizer_change_notifier.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:random_gen/main.dart';
 
-class RandomGeneratorPage extends StatelessWidget {
+class RandomGeneratorPage extends ConsumerWidget {
   const RandomGeneratorPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Generate'),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          context.read<RandomizerChangeNotifier>().generateRandomNumber();
-
+          ref.read(randomizerProvider).generateRandomNumber();
         },
         label: const Text(
           'Generate',
@@ -26,12 +25,14 @@ class RandomGeneratorPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
-            child: Consumer<RandomizerChangeNotifier>(
-          builder: (context, notifier, child) => Text(
-          notifier.randomNumber?.toString() ?? 'Generate a number',
-            style: const TextStyle(fontSize: 40),
+          child: Text(
+            ref.watch(randomizerProvider).randomNumber?.toString() ??
+                'Generate a number',
+            style: const TextStyle(
+              fontSize: 40,
+            ),
           ),
-        )),
+        ),
       ),
     );
   }
