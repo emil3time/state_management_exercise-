@@ -15,7 +15,8 @@ class RangeSelectorForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reference = ref.read(randomizerProvider);
+    // randomizerProvider.notifier - to access RandomizerStateNotifier
+    final randomizer = ref.read(randomizerProvider.notifier);
 
     return Form(
       key: formKey,
@@ -26,14 +27,14 @@ class RangeSelectorForm extends ConsumerWidget {
           children: <Widget>[
             RangeTextFormField(
               labelText: 'minimum',
-              intValueSetter: (value) => reference.min = value,
+              intValueSetter: (value) => randomizer.setMin(value),
             ),
             const SizedBox(
               height: 20,
             ),
             RangeTextFormField(
               labelText: 'maximum',
-              intValueSetter: (value) => reference.max = value,
+              intValueSetter: (value) => randomizer.setMax(value),
             ),
           ],
         ),

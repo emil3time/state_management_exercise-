@@ -15,7 +15,9 @@ class RandomGeneratorPage extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          ref.read(randomizerProvider).generateRandomNumber();
+
+          // randomizerProvider.notifier - to access RandomizerStateNotifier
+          ref.read(randomizerProvider.notifier).generateRandomNumber();
         },
         label: const Text(
           'Generate',
@@ -26,7 +28,8 @@ class RandomGeneratorPage extends ConsumerWidget {
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Text(
-            ref.watch(randomizerProvider).randomNumber?.toString() ??
+            // randomizerProvider - to access RandomizerState - to only watch actual state
+            ref.watch(randomizerProvider).generatedNumber?.toString() ??
                 'Generate a number',
             style: const TextStyle(
               fontSize: 40,
